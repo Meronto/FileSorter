@@ -1,0 +1,7 @@
+Images: .jpg, .jpeg, .png, .tiff, .tif, .bmp, .webp, .heif, .heic, .avif, .cr2, .cr3, .nef, .nrw, .arw, .raf, .dng, .gif, .psd, .tga
+Documents: .txt, .docx, .doc, .odt, .rtf, .tex, .md, .html, .htm, .xml, .pdf, .dotx, .dotm, .xlsx, .xls, .ods, .csv, .tsv, .xlsb, .xltx, .xltm, .xla, .xlam
+Arhives: .zip, .rar, .7z, .tar, .gz, .tgz, .bz2, .tar.bz2, .xz, .tar.xz
+Windows: .exe, .msi
+Android: .apk, .xapk
+#gdhscuhsiuchaui
+Video: .mp4, .avi, .mov, .wmv, .mkv, .flv, .webm, .mpg, .mpeg, .3gp, .m4v, .vob, .ogv, .rm, .rmvb, .divx, .ts, .m2ts
