@@ -4,12 +4,12 @@
 #include <map>
 #include <filesystem>
 
-void preview_Sort(
-    const std::filesystem::path & folder_path,
+void preview_sort(
+    const std::filesystem::path & source_path, const std::filesystem::path & output_path,
     const std::map<std::string, std::string>&dictionary
 );
-void file_Sorter(
-    const std::filesystem::path & folder_path,
+void file_sorter(
+    const std::filesystem::path & source_path,const std::filesystem::path & output_path,
     const std::map<std::string, std::string>&dictionary
 );
 
