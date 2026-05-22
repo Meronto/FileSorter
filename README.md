@@ -198,7 +198,7 @@ test_input/
 
 ## Current Limitations
 
-- Does not sort files recursively
+- Does not sort files recursively __(partially finished)__
 - Does not rename files if a file with the same name already exists
 - Does not currently support undo
 - Does not copy files, only moves them
@@ -206,7 +206,7 @@ test_input/
 
 ## Possible Future Improvements
 
-- Recursive folder sorting
+- Recursive folder sorting __(partially finished)__
 - Dry-run mode as a command-line option
 - Copy mode instead of move mode
 - Automatic conflict renaming, for example `file_1.txt`
