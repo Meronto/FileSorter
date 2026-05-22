@@ -1,37 +1,53 @@
 #include "config_parser.h"
 #include "file_sorter.h"
 #include <iostream>
+
 using namespace std;
+
 int main() {
-    setlocale(LC_ALL, "ru");
-    string path = "config\\File_Exp.txt";
-    map<string, string> dictionary = load_config(path);
+
+    string config_path = "config\\File_Exp.txt";
+
+    bool recursive_mode = false;
+
+    map<string, string> dictionary = load_config(config_path);
+
     string source_path;
     string output_path;
-    cout << "Введите полный путь к файлам для сортировки: " << endl;
-    getline(cin,source_path);
-    cout << "Введите полный путь к папке назначения: " << endl;
-    getline(cin,output_path);
-    source_path = source_path;
-    output_path = output_path;
 
-    cout << "\n=== Предосмотр сортировки ===\n";
-    preview_sort(source_path, output_path, dictionary);
-    
-    string ansver;
-    cout << "\nПродолжить перемещение? (y/n)\n";
-    getline(cin,ansver);
+    cout << "Enter the full path to the source folder: " << endl;
+    getline(cin, source_path);
 
-    if(ansver == "y" || ansver == "Y" || ansver == "н" || ansver == "Н"){
-        cout << "\n=== Перемещение файлов===\n";
-        file_sorter(source_path, output_path, dictionary);
-        cout << "\nГотово!\n";
-    } else {
-        cout << "\nОперация отменена!\n";
+    cout << "Enter the full path to the output folder: " << endl;
+    getline(cin, output_path);
+
+    string recursive_answer;
+
+    cout << "\nScan subfolders too? (y/n): " << endl;
+    getline(cin, recursive_answer);
+
+    if (recursive_answer == "y" || recursive_answer == "Y" || recursive_answer == "н" || recursive_answer == "Н") {
+        recursive_mode = true;
     }
 
-    cout << "\nНажмите Enter для выхода...\n";
+    cout << "\n=== Sorting preview ===\n";
+    preview_sort(source_path, output_path, dictionary, recursive_mode);
+
+    string answer;
+
+    cout << "\nContinue moving files? (y/n): " << endl;
+    getline(cin, answer);
+
+    if (answer == "y" || answer == "Y" || answer == "н" || answer == "Н") {
+        cout << "\n=== Moving files ===\n";
+        file_sorter(source_path, output_path, dictionary, recursive_mode);
+        cout << "\nDone!\n";
+    } else {
+        cout << "\nOperation canceled.\n";
+    }
+
+    cout << "\nPress Enter to exit...";
     cin.get();
+
     return 0;
 }
-
