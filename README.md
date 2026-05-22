@@ -125,13 +125,14 @@ Rules:
 From the project root:
 
 ```bash
-g++ src/main.cpp src/config_parser.cpp src/file_sorter.cpp -std=c++17 -o sorter
+cd src
+g++ main.cpp config_parser.cpp file_sorter.cpp -std=c++17 -o sorter
 ```
 
 Run:
 
 ```bash
-./sorter.exe
+sorter.exe
 ```
 
 ### Linux
@@ -139,13 +140,14 @@ Run:
 From the project root:
 
 ```bash
-g++ src/main.cpp src/config_parser.cpp src/file_sorter.cpp -std=c++17 -o sorter
+cd src
+g++ main.cpp config_parser.cpp file_sorter.cpp -std=c++17 -o sorter
 ```
 
 Run:
 
 ```bash
-./sorter
+sorter
 ```
 
 ## Usage
