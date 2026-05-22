@@ -7,3 +7,4 @@ Android: .apk, .xapk
 Video: .mp4, .avi, .mov, .wmv, .mkv, .flv, .webm, .mpg, .mpeg, .3gp, .m4v, .vob, .ogv, .rm, .rmvb, .divx, .ts, .m2ts
 Music: .waw, .aif, .aiff, .flac, .m4a, .ape, .wv, .mp3, .ogg, .oga, .wma, .opus
 Code: .py, .js, .ts, .php, .rb, .go, .rs, .swift, .kt, .kts, .scala, .c, .cpp, .cc, .h, .cs, .java, .pas, .f90, .f95, .html, .htm, .css, .xml, .json, .yaml, .yml, .sh, .bat, .ps1, .vbs, .sql, .pl, .lua, .m, .r, .dart, .el, .md, .gitignore, .env
+Torrent: .torrent
