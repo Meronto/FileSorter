@@ -1,6 +1,6 @@
 #include "file_sorter.h"
 #include <iostream>
-
+#include <vector>
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -19,7 +19,6 @@ static bool is_inside_path(const fs::path& child, const fs::path& parent) {
 
     return true;
 }
-
 
 static string get_target_folder(
     const fs::path& file_path,
@@ -56,16 +55,16 @@ static void preview_entry(
          << endl;
 }
 
-static void sort_entry(
-    const fs::directory_entry& entry,
+static void sort_file(
+    const fs::path& source_file,
     const fs::path& output_path,
     const map<string, string>& dictionary
 ) {
-    if (!entry.is_regular_file()) {
+    if (!fs::exists(source_file) || !fs::is_regular_file(source_file)) {
         return;
     }
 
-    string target_folder_name = get_target_folder(entry.path(), dictionary);
+    string target_folder_name = get_target_folder(source_file, dictionary);
 
     fs::path target_folder_path = output_path / target_folder_name;
 
@@ -73,8 +72,17 @@ static void sort_entry(
         fs::create_directories(target_folder_path);
     }
 
-    fs::path source_file = entry.path();
-    fs::path destination_file = target_folder_path / entry.path().filename();
+    fs::path destination_file = target_folder_path / source_file.filename();
+
+    fs::path source_abs = fs::absolute(source_file).lexically_normal();
+    fs::path destination_abs = fs::absolute(destination_file).lexically_normal();
+
+    if (source_abs == destination_abs) {
+        cout << "Already in place: "
+             << source_file.string()
+             << endl;
+        return;
+    }
 
     if (fs::exists(destination_file)) {
         cout << "File already exists: "
@@ -101,9 +109,10 @@ void preview_sort(
         cout << "Error: source folder does not exist\n";
         return;
     }
-    
-    if(recursive_mode && is_inside_path(output_path,source_path)){
-        cout << "Warning: output folder is inside source folder. Real sorting will be blocked in recursive mode!\n";
+
+    if (recursive_mode && is_inside_path(output_path, source_path)) {
+        cout << "Warning: output folder is inside source folder.\n";
+        cout << "Files will be collected before moving, so recursive sorting is allowed.\n";
     }
 
     if (recursive_mode) {
@@ -128,11 +137,6 @@ void file_sorter(
         return;
     }
 
-    if(recursive_mode && is_inside_path(output_path,source_path)){
-        cout << "Error: recursive sorting is not allowed when output folder is inside sourse folder!\n";
-        return;
-    }
-
     if (!fs::exists(output_path)) {
         fs::create_directories(output_path);
     }
@@ -142,13 +146,23 @@ void file_sorter(
         return;
     }
 
+    vector<fs::path> files;
+
     if (recursive_mode) {
         for (const auto& entry : fs::recursive_directory_iterator(source_path)) {
-            sort_entry(entry, output_path, dictionary);
+            if (entry.is_regular_file()) {
+                files.push_back(entry.path());
+            }
         }
     } else {
         for (const auto& entry : fs::directory_iterator(source_path)) {
-            sort_entry(entry, output_path, dictionary);
+            if (entry.is_regular_file()) {
+                files.push_back(entry.path());
+            }
         }
+    }
+
+    for (const auto& file : files) {
+        sort_file(file, output_path, dictionary);
     }
 }
