@@ -1,10 +1,23 @@
+Text_Files: .txt, .rtf, .tex,
+Documents: .docx, .doc, .odt, .dotx, .dotm
+Spreadsheets: .xlsx, .xls, .ods, .csv, .tsv, .xlsb, .xltx, .xltm, .xla, .xlam
+Presentations: .pptx, .ppt, .odp
+PDF: .pdf
 Images: .jpg, .jpeg, .png, .tiff, .tif, .bmp, .webp, .heif, .heic, .avif, .cr2, .cr3, .nef, .nrw, .arw, .raf, .dng, .gif, .psd, .tga
-Documents: .txt, .docx, .doc, .odt, .rtf, .tex, .md, .html, .htm, .xml, .pdf, .dotx, .dotm, .xlsx, .xls, .ods, .csv, .tsv, .xlsb, .xltx, .xltm, .xla, .xlam
-Arhives: .zip, .rar, .7z, .tar, .gz, .tgz, .bz2, .tar.bz2, .xz, .tar.xz
+Archives: .zip, .rar, .7z, .tar, .gz, .tgz, .bz2, .tar.bz2, .xz, .tar.xz
 Windows: .exe, .msi
 Android: .apk, .xapk
-#gdhscuhsiuchaui
 Video: .mp4, .avi, .mov, .wmv, .mkv, .flv, .webm, .mpg, .mpeg, .3gp, .m4v, .vob, .ogv, .rm, .rmvb, .divx, .ts, .m2ts
-Music: .waw, .aif, .aiff, .flac, .m4a, .ape, .wv, .mp3, .ogg, .oga, .wma, .opus
-Code: .py, .js, .ts, .php, .rb, .go, .rs, .swift, .kt, .kts, .scala, .c, .cpp, .cc, .h, .cs, .java, .pas, .f90, .f95, .html, .htm, .css, .xml, .json, .yaml, .yml, .sh, .bat, .ps1, .vbs, .sql, .pl, .lua, .m, .r, .dart, .el, .md, .gitignore, .env
+Music: .wav, .aif, .aiff, .flac, .m4a, .ape, .wv, .mp3, .ogg, .oga, .wma, .opus
+Code: .py, .js, .ts, .php, .rb, .go, .rs, .swift, .kt, .kts, .scala, .c, .cpp, .cc, .h, .cs, .java, .pas, .f90, .f95, .html, .htm, .css, .xml, .json, .yaml, .yml, .sh, .bat, .ps1, .vbs, .sql, .pl, .lua, .m, .r, .dart, .el, .gitignore, .env, .md
 Torrent: .torrent
+Books: .epub, .fb2, .mobi, .azw3
+Databases: .db, .sqlite, .sqlite3, .mdb, .accdb, .dbf, .fdb, .sql
+CAD_Drawings: .dwg, .dxf, .cdr, .ai, .eps, .svg, .skp, .3ds, .blend, .stl, .step, .iges
+Fonts: .ttf, .otf, .woff, .woff2, .eot, .fnt
+Disk_Images: .iso, .img, .bin, .cue, .nrg, .mdf, .mds, .vhd, .vhdx, .dmg
+Config_Settings: .cfg, .conf, .ini, .inf, .reg, .plist, .toml
+Certificates_Keys: .crt, .cer, .der, .pem, .key, .p12, .pfx
+Web_components: .aspx, .jsp, .jsx, .tsx, .vue, .wasm
+Logs: .log
+
