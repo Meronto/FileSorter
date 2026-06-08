@@ -7,13 +7,22 @@
 using namespace std;
 
 string trim(string line){
-    while (!line.empty() && line[0] == ' ' ){
+
+    const string whitespace = " \t\r\n";
+
+    size_t start = line.find_first_not_of(whitespace);
+    if (start == string::npos) {
+        return "";
+    }
+    size_t end = line.find_last_not_of(whitespace);
+    return line.substr(start, end - start +1);
+    /*while (!line.empty() && line[0] == ' ' ){
         line.erase(0,1);
     }
     while (!line.empty() && line[line.size() - 1] == ' ' ){
         line.erase(line.size() - 1, 1);
     }
-    return line;
+    return line;*/
 }
 
 map<string, string> load_config(const string& path) {

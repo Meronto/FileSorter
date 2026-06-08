@@ -140,16 +140,20 @@ sorter.exe
 From the project root:
 
 ```bash
-cd src
-g++ main.cpp config_parser.cpp file_sorter.cpp -std=c++17 -o sorter
+sudo make && make install
 ```
 
 Run:
 
 ```bash
-sorter
+filesorter
 ```
+(Note: ensure /usr/local/bin is added to your $PATH)
 
+To remove the program from your system:
+```bash
+sudo make uninstall
+```
 ## Usage
 
 1. Build the project.
@@ -169,14 +173,14 @@ Example:
 
 ```text
 Enter source folder:
-C:\Users\User\Desktop\input
+C:/Users/User/Desktop/input
 
 Enter output folder:
-C:\Users\User\Desktop\sorted
+C:/Users/User/Desktop/sorted
 
 === Preview ===
-movie.mp4 -> C:\Users\User\Desktop\sorted\Video\movie.mp4
-archive.zip -> C:\Users\User\Desktop\sorted\Archives\archive.zip
+movie.mp4 -> C:/Users/User/Desktop/sorted/Video/movie.mp4
+archive.zip -> C:/Users/User/Desktop/sorted/Archives/archive.zip
 
 Continue moving files? (y/n):
 y
@@ -214,7 +218,7 @@ test_input/
 - Logging to a file
 - JSON or TOML config support
 - GUI version
-- CMake build support
+- CMake build support (partially done)
 
 ## Why This Project Exists
 
