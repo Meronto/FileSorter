@@ -16,13 +16,6 @@ string trim(string line){
     }
     size_t end = line.find_last_not_of(whitespace);
     return line.substr(start, end - start +1);
-    /*while (!line.empty() && line[0] == ' ' ){
-        line.erase(0,1);
-    }
-    while (!line.empty() && line[line.size() - 1] == ' ' ){
-        line.erase(line.size() - 1, 1);
-    }
-    return line;*/
 }
 
 map<string, string> load_config(const string& path) {
@@ -30,10 +23,10 @@ map<string, string> load_config(const string& path) {
     ifstream fin;
     fin.open(path);
     if (!fin.is_open()) {
-        cout << "Не удалось открыть конфиг\n";
+        cout << "Error: Couldn't open the config\n";
     }
     else {
-        cout << "Конфиг открыт\n";
+        cout << "The configuration is open!\n";
         string line;
         while (getline(fin, line)) {
             if (line.empty() || line[0] == '#') {
@@ -41,7 +34,7 @@ map<string, string> load_config(const string& path) {
             }
             size_t colon_pos = line.find(':');
             if (colon_pos == string::npos) {
-                cout << "Не найден разделитель ':' - строка пропущна\n";
+                cout << "Warning: Failed to open the config. No separator ':' was found - the line is skipped\n";
                 continue;
             }
             string folder = line.substr(0, colon_pos);

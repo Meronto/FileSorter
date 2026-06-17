@@ -20,4 +20,3 @@ Config_Settings: .cfg, .conf, .ini, .inf, .reg, .plist, .toml
 Certificates_Keys: .crt, .cer, .der, .pem, .key, .p12, .pfx
 Web_components: .aspx, .jsp, .jsx, .tsx, .vue, .wasm
 Logs: .log
-

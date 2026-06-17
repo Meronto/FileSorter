@@ -9,9 +9,9 @@ namespace fs = std::filesystem;
 int main() {
 
     string config_path = "config/File_Exp.txt";
-    #ifdef _WIN32
-        string sys_config_path ="usr/local/etc/filesorter/File_Exp.txt";
-        string dev_config_path ="src/config/File_Exp.txt";
+    #ifndef _WIN32
+        string sys_config_path = "/usr/local/etc/filesorter/File_Exp.txt";
+        string dev_config_path = "src/config/File_Exp.txt";
         if (fs::exists(sys_config_path)){
             config_path = sys_config_path;
         } else if (fs::exists(dev_config_path)){
@@ -20,6 +20,9 @@ int main() {
     #endif
     bool recursive_mode = false;
     map<string, string> dictionary = load_config(config_path);
+    if (dictionary.empty()){
+        return 0;
+    }
     string source_path;
     string output_path;
 
@@ -35,9 +38,13 @@ int main() {
     if (recursive_answer == "y" || recursive_answer == "Y" || recursive_answer == "н" || recursive_answer == "Н") {
         recursive_mode = true;
     }
-
+    vector<move_task> plan = build_sort_plan(source_path, output_path, dictionary, recursive_mode);
+    if (plan.empty()){
+        cout << "There is nothing to sort!";
+        return 0;
+    }
     cout << "\n=== Sorting preview ===\n";
-    preview_sort(source_path, output_path, dictionary, recursive_mode);
+    preview_sort(plan);
 
     string answer;
     cout << "\nContinue moving files? (y/n): " << endl;
@@ -45,7 +52,7 @@ int main() {
 
     if (answer == "y" || answer == "Y" || answer == "н" || answer == "Н") {
         cout << "\n=== Moving files ===\n";
-        file_sorter(source_path, output_path, dictionary, recursive_mode);
+        execute_sorter(plan);
         cout << "\nDone!\n";
     } else {
         cout << "\nOperation canceled.\n";

@@ -16,7 +16,6 @@ static bool is_inside_path(const fs::path& child, const fs::path& parent) {
             return false;
         }
     }
-
     return true;
 }
 
@@ -99,70 +98,57 @@ static void sort_file(
          << endl;
 }
 
-void preview_sort(
+vector<move_task> build_sort_plan(
     const fs::path& source_path,
     const fs::path& output_path,
     const map<string, string>& dictionary,
     bool recursive_mode
 ) {
+    vector<move_task> plan;
     if (!fs::exists(source_path) || !fs::is_directory(source_path)) {
         cout << "Error: source folder does not exist\n";
-        return;
+        return plan;
     }
 
     if (recursive_mode && is_inside_path(output_path, source_path)) {
         cout << "Warning: output folder is inside source folder.\n";
         cout << "Files will be collected before moving, so recursive sorting is allowed.\n";
     }
-
+    
     if (recursive_mode) {
         for (const auto& entry : fs::recursive_directory_iterator(source_path)) {
-            preview_entry(entry, output_path, dictionary);
+            if (!entry.is_regular_file()) {
+                continue;
+            }
+        string target_folder_name = get_target_folder(entry.path(), dictionary);
+        fs::path dest_path = output_path / target_folder_name / entry.path().filename();
+        plan.push_back({entry.path(), dest_path});
         }
     } else {
         for (const auto& entry : fs::directory_iterator(source_path)) {
-            preview_entry(entry, output_path, dictionary);
+            if (!entry.is_regular_file()) {
+                continue;
+            }
+        string target_folder_name = get_target_folder(entry.path(), dictionary);
+        fs::path dest_path = output_path / target_folder_name / entry.path().filename();
+        plan.push_back({entry.path(), dest_path});
         }
     }
+    return plan;
 }
 
-void file_sorter(
-    const fs::path& source_path,
-    const fs::path& output_path,
-    const map<string, string>& dictionary,
-    bool recursive_mode
+void preview_sort(
+    const std::vector<move_task>& plan
 ) {
-    if (!fs::exists(source_path) || !fs::is_directory(source_path)) {
-        cout << "Error: source folder does not exist\n";
-        return;
-    }
+   for(const auto& task:plan){
+    cout << task.source.string() << " ->" << task.destination.string() << endl;
+   }
+}
 
-    if (!fs::exists(output_path)) {
-        fs::create_directories(output_path);
-    }
-
-    if (!fs::is_directory(output_path)) {
-        cout << "Error: output path is not a folder\n";
-        return;
-    }
-
-    vector<fs::path> files;
-
-    if (recursive_mode) {
-        for (const auto& entry : fs::recursive_directory_iterator(source_path)) {
-            if (entry.is_regular_file()) {
-                files.push_back(entry.path());
-            }
-        }
-    } else {
-        for (const auto& entry : fs::directory_iterator(source_path)) {
-            if (entry.is_regular_file()) {
-                files.push_back(entry.path());
-            }
-        }
-    }
-
-    for (const auto& file : files) {
-        sort_file(file, output_path, dictionary);
-    }
+void execute_sorter(
+    const std::vector<move_task>& plan
+) {
+    for(const auto& task:plan){
+    fs::rename(task.source, task.destination);
+   }
 }
