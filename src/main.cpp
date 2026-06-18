@@ -23,6 +23,7 @@ int main() {
     if (dictionary.empty()){
         return 0;
     }
+
     string source_path;
     string output_path;
 
@@ -38,11 +39,32 @@ int main() {
     if (recursive_answer == "y" || recursive_answer == "Y" || recursive_answer == "н" || recursive_answer == "Н") {
         recursive_mode = true;
     }
-    vector<move_task> plan = build_sort_plan(source_path, output_path, dictionary, recursive_mode);
+    bool has_collisions = false;
+    CollisionPolicy current_policy = CollisionPolicy::Ask;
+    vector<move_task> plan = build_sort_plan(source_path, output_path, dictionary, recursive_mode, current_policy, has_collisions);
+    if (has_collisions) {
+    string policy_answer;
+    cout << "\n=== Collision Policy ===\n";
+    cout << "1. Rename duplicates (e.g. file_1.ext)\n";
+    cout << "2. Skip duplicates\n";
+    cout << "3. Overwrite existing files (DANGER)\n";
+    cout << "Choose action (1-3) [default 1]: " << endl;
+    getline(cin, policy_answer);
+
+    current_policy = CollisionPolicy::Rename;
+    if (policy_answer == "2") {
+        current_policy = CollisionPolicy::Skip;
+    } else if (policy_answer == "3") {
+        current_policy = CollisionPolicy::Owerwrite;
+    }
+    bool dummy = false;
+    plan = build_sort_plan(source_path, output_path, dictionary, recursive_mode, current_policy, dummy);
+    }
     if (plan.empty()){
-        cout << "There is nothing to sort!";
+        cout << "There is nothing to sort!\n";
         return 0;
     }
+
     cout << "\n=== Sorting preview ===\n";
     preview_sort(plan);
 

@@ -1,3 +1,4 @@
+#include "collision_resolver.h"
 #include "file_sorter.h"
 #include <iostream>
 #include <vector>
@@ -34,13 +35,18 @@ static string get_target_folder(
     return "Other";
 }
 
-vector<move_task> build_sort_plan(
+std::vector<move_task> build_sort_plan(
     const fs::path& source_path,
     const fs::path& output_path,
     const map<string, string>& dictionary,
-    bool recursive_mode
+    bool recursive_mode,
+    CollisionPolicy policy,
+    bool& collision_detected
 ) {
     vector<move_task> plan;
+    unordered_set<string> booked_paths;
+    collision_detected = false;
+
     if (!fs::exists(source_path) || !fs::is_directory(source_path)) {
         cout << "Error: source folder does not exist\n";
         return plan;
@@ -50,41 +56,50 @@ vector<move_task> build_sort_plan(
         cout << "Warning: output folder is inside source folder.\n";
         cout << "Files will be collected before moving, so recursive sorting is allowed.\n";
     }
-    
-    if (recursive_mode) {
-        for (const auto& entry : fs::recursive_directory_iterator(source_path)) {
-            if (!entry.is_regular_file()) {
-                continue;
-            }
+    auto process_file = [&](const fs::directory_entry& entry) {
+        if (!entry.is_regular_file()) return;
+
         string target_folder_name = get_target_folder(entry.path(), dictionary);
         fs::path dest_path = output_path / target_folder_name / entry.path().filename();
+        if (entry.path() == dest_path) {
+            return;
+        }
+        bool is_collision = fs::exists(dest_path) || booked_paths.count(dest_path.string()) > 0;
+
+        if (is_collision) {
+            collision_detected = true;
+            if (policy == CollisionPolicy::Ask || policy == CollisionPolicy::Skip) {
+                return;
+            } 
+            else if (policy == CollisionPolicy::Rename) {
+                dest_path = SorterLogics::resolve_name_collision(dest_path, booked_paths);
+            }
+        }
         plan.push_back({entry.path(), dest_path});
+        booked_paths.insert(dest_path.string());
+    };
+    if (recursive_mode) {
+        for (const auto& entry : fs::recursive_directory_iterator(source_path)) {
+            process_file(entry);
         }
     } else {
         for (const auto& entry : fs::directory_iterator(source_path)) {
-            if (!entry.is_regular_file()) {
-                continue;
-            }
-        string target_folder_name = get_target_folder(entry.path(), dictionary);
-        fs::path dest_path = output_path / target_folder_name / entry.path().filename();
-        plan.push_back({entry.path(), dest_path});
+            process_file(entry);
         }
     }
+
     return plan;
 }
 
-void preview_sort(
-    const std::vector<move_task>& plan
-) {
-   for(const auto& task:plan){
-    cout << task.source.string() << " ->" << task.destination.string() << endl;
-   }
+void preview_sort(const vector<move_task>& plan) {
+    for (const auto& task : plan) {
+        cout << task.source.string() << " -> " << task.destination.string() << endl;
+    }
 }
 
-void execute_sorter(
-    const std::vector<move_task>& plan
-) {
-    for(const auto& task:plan){
-    fs::rename(task.source, task.destination);
-   }
+void execute_sorter(const vector<move_task>& plan) {
+    for (const auto& task : plan) {
+        fs::create_directories(task.destination.parent_path());
+        fs::rename(task.source, task.destination);
+    }
 }

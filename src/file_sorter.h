@@ -10,10 +10,19 @@ struct move_task{
     std::filesystem::path destination;
 };
 
+enum class CollisionPolicy {
+    Ask = 0,
+    Rename = 1,
+    Skip = 2,
+    Owerwrite = 3
+};
+
 std::vector<move_task> build_sort_plan(const std::filesystem::path & source_path,
     const std::filesystem::path & output_path,
     const std::map<std::string, std::string>&dictionary, 
-    bool recursive_mode
+    bool recursive_mode,
+    CollisionPolicy policy,
+    bool& collision_detected
 ); 
 
 void preview_sort(
