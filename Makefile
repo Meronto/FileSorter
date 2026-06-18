@@ -1,5 +1,3 @@
-
-
 CXX      ?= g++
 CXXFLAGS ?= -std=c++17 -O3 -Wall -Wextra -Werror
 
@@ -9,7 +7,7 @@ SYSCONFDIR ?= $(PREFIX)/etc
 
 CONFIG_DEST = $(SYSCONFDIR)/filesorter
 
-SRCS     = $(wildcard *.cpp)
+SRCS     = $(wildcard src/*.cpp)
 OBJS     = $(SRCS:.cpp=.o)
 
 .PHONY: all clean install uninstall
@@ -34,7 +32,7 @@ install: all
 	
 	@echo "[INSTALL] Copying entire config directory to $(CONFIG_DEST)"
 	mkdir -p $(DESTDIR)$(CONFIG_DEST)
-	cp -r config/* $(DESTDIR)$(CONFIG_DEST)/
+	cp -r src/config/* $(DESTDIR)$(CONFIG_DEST)/
 	chmod 755 $(DESTDIR)$(CONFIG_DEST)
 	chmod -R 644 $(DESTDIR)$(CONFIG_DEST)/*
 

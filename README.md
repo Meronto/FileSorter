@@ -126,13 +126,13 @@ From the project root:
 
 ```bash
 cd src
-g++ main.cpp config_parser.cpp file_sorter.cpp -std=c++17 -o sorter
+g++ main.cpp config_parser.cpp file_sorter.cpp collision_resolver.cpp -std=c++17 -o sorter
 ```
 
 Run:
 
 ```bash
-sorter.exe
+./sorter.exe
 ```
 
 ### Linux
@@ -205,16 +205,13 @@ test_input/
 ## Current Limitations
 
 
-- Does not rename files if a file with the same name already exists
 - Does not currently support undo
 - Does not copy files, only moves them
 - Extension matching depends on how extensions are written in the config
 
 ## Possible Future Improvements
 
-- Dry-run mode as a command-line option
 - Copy mode instead of move mode
-- Automatic conflict renaming, for example `file_1.txt`
 - Logging to a file
 - JSON or TOML config support
 - GUI version
